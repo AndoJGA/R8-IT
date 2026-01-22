@@ -1,35 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import TopTenContent from "../Components/TopTenContent.jsx";
+import React, { useEffect, useState } from "react";
+import TopPick from "../Components/TopPick.jsx";
 
+import { getTrending } from "../services/content.js";
+import { getLogo } from "../services/images.js";
+import { IMAGE_BASE } from "../services/tmdbClient.js";
+import genreData from "../services/genres.js";
+import {randomIndex} from "../services/randomNumber.js";
 
 const ExplorePage = () => {
-    const trending_endpoint = "https://api.themoviedb.org/3/trending/all/day";
-    const tmdbApiKey = import.meta.env.VITE_TMDB_API_KEY;
-    const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
-
     const [loading, setLoading] = useState(false);
     const [contentArray, setContentArray] = useState([]);
 
-
-    function getRandomInt(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    const myNumber = getRandomInt(1, 20);
-    console.log(myNumber);
-
-
-
-    useEffect(() => {const fetchTrending = async () => {
+    useEffect(() => {
+        const fetchTrending = async () => {
         setLoading(true);
         try {
-            const url = `${trending_endpoint}?api_key=${tmdbApiKey}`;
-            const response = await fetch(url);
-            const data = await response.json();
+            const data = await getTrending('all', 'day');
+            const rawItems = data.results.slice(randomIndex).concat(data.results.slice(0, randomIndex));
 
-            const rawItems = data.results.slice(myNumber).concat(data.results.slice(0, myNumber));
 
             setContentArray(rawItems);
         } catch (error) {
@@ -40,29 +28,33 @@ const ExplorePage = () => {
     };
 
         fetchTrending();
-    }, [tmdbApiKey]);
+    }, []);
+
+    if (loading) return <div className="loader">Loading Trending Content...</div>;
 
     return (
         <div>
             <header>
-                <TopTenContent/>
+                <TopPick/>
             </header>
             <main>
                 <div className="trending">
-                    {loading && <p>Loading the Trending top 10....</p>}
-                    <ul>
+                    <h1>Trending Content</h1>
+                    <ul className="trending-list">
                         {!loading && contentArray.map((item) => (
-                            <li>
-                                <div
+                            <li key={item.id}> {/* Adding the key here fixes the warning */}
+                                <button
+                                    onClick={() => {console.log("You clicked: " + (item.title||item.name)) }}
                                     style={{
-                                        backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.2), rgba(0,0,0,1)), linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.6)),  url("${imageBaseUrl + item.poster_path}")`,
+                                        backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.2), rgba(0,0,0,1)), linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.6)),  url("${IMAGE_BASE + item.poster_path}")`,
                                         backgroundPosition: 'center',
                                         backgroundRepeat: 'no-repeat',
                                         backgroundSize: 'cover',
                                         height: '450px',
                                         width: '300px',
+                                        borderRadius: '10px'
                                     }}
-                                ></div>
+                                ></button>
                             </li>
                         ))}
                     </ul>
