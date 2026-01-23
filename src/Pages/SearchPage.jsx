@@ -1,10 +1,9 @@
 import React, {useState} from "react";
 
-const SearchPage = () => {
-    const searchEndpoint = "https://api.themoviedb.org/3/search/multi";
-    const tmdbApiKey = import.meta.env.VITE_TMDB_API_KEY;
-    const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
+import { searchContent } from "../services/content.js";
+import { IMAGE_BASE } from "../services/tmdbClient.js";
 
+const SearchPage = () => {
     const [loading, setLoading] = useState(false);
     const [contentArray, setContentArray] = useState([]);
     const [searchTerm, setSearchTerm] = useState()
@@ -18,17 +17,12 @@ const SearchPage = () => {
         setLoading(true);
 
         try {
-            const searchUrl = `${searchEndpoint}?api_key=${tmdbApiKey}&query=${searchTerm}`;
-            const response = await fetch(searchUrl);
-            const data = await response.json();
+            const data = await searchContent(searchTerm);
 
-            // 1. Filter out results that aren't Movies or TV shows (TMDB search can return 'person')
-            // 2. Filter out results that don't have a poster_path or backdrop_path
             const filteredResults = data.results.filter(item =>
                 (item.media_type === 'movie' || item.media_type === 'tv') && item.poster_path
             );
 
-            // 3. (Optional) You can do the Logo Fetching here too if you want search results to have logos!
             setContentArray(filteredResults);
 
         } catch (error) {
@@ -57,7 +51,7 @@ const SearchPage = () => {
                                 // Your exact requested gradient and backdrop logic
                                 backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.2), rgba(0,0,0,1)), 
                                       linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.6)),  
-                                      url("${imageBaseUrl + item.poster_path}")`,
+                                      url("${IMAGE_BASE + item.poster_path}")`,
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundSize: 'cover',

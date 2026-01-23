@@ -1,10 +1,51 @@
+/* Import Geologica (Netflix Sans closest match) and Inter (for UI text) */
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@400;700;900&family=Inter:wght@400;700&display=swap');
+
 *{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-body{
-    background: black;
-    color: white;
+body {
+    background: #141414; /* Netflix signature background black */
+    color: #e5e5e5;      /* Netflix off-white for better readability */
+    font-family: 'Inter', sans-serif; /* Default UI font */
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Specific styling for Movie Titles and Headings */
+h1, h2, h3, .movie-title {
+    font-family: 'Geologica', sans-serif;
+    font-weight: 900;      /* Ultra Bold */
+    text-transform: uppercase;
+    letter-spacing: -0.02em; /* Netflix titles actually have TIGHTER spacing */
+    line-height: 1.1;
+    color: #fff;
+}
+
+/* The Overview/Description logic */
+p, .overview-section h3 {
+    font-family: 'Inter', sans-serif;
+    text-transform: none;  /* Netflix does NOT use caps for descriptions */
+    letter-spacing: normal;
+    font-weight: 400;
+    line-height: 1.4;
+    color: #d2d2d2;
+}
+
+/* Button Styling (Netflix Style) */
+button {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    text-transform: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px; /* Netflix uses small rounded corners */
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+/* Starring/Cast Line */
+.overview-section p strong {
+    color: #d4d4d4; /* Netflix uses grey for labels like 'Starring:' */
 }

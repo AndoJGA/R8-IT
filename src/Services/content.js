@@ -6,5 +6,11 @@ export const getTrending = (type = 'all', time = 'week') =>
 export const searchContent = (query) =>
     tmdbFetch('/search/multi', `&query=${encodeURIComponent(query)}`);
 
-export const getDetails = (type, id) =>
-    tmdbFetch(`/${type}/${id}`);
+export const getCredits = (type, id) =>
+    tmdbFetch(`/${type}/${id}/credits`);
+
+export const getVideos = (type, id) =>
+    tmdbFetch(`/${type}/${id}/videos`);
+
+export const getRecommendations = (type, id) =>
+    tmdbFetch(`/${type}/${id}/recommendations`);
