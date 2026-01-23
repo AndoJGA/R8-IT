@@ -43,7 +43,7 @@ const ExplorePage = () => {
                     <ul className="trending-list">
                         {!loading && contentArray.map((item) => (
                             <li key={item.id}> {/* Adding the key here fixes the warning */}
-                                <button
+                                <button className="movie-cards"
                                     onClick={() => {console.log("You clicked: " + (item.title||item.name)) }}
                                     style={{
                                         backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.2), rgba(0,0,0,1)), linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.6)),  url("${IMAGE_BASE + item.poster_path}")`,
