@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TopPick from "../Components/TopPick.jsx";
 import { getTrending } from "../services/content.js";
-import { IMAGE_BASE } from "../services/tmdbClient.js";
+import {IMAGE_BASE, IMAGE_SMALL_POSTER} from "../services/tmdbClient.js";
 import { randomIndex } from "../services/randomNumber.js";
 import { useNavigate } from "react-router-dom";
 import {getLogo} from "../Services/images.js"; // Use useNavigate, not useNavigation
@@ -59,7 +59,7 @@ const ExplorePage = () => {
                                     onClick={() => handleDetails(item)}
                                     // 4. Style must be INSIDE the tag
                                     style={{
-                                        backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.2), rgba(0,0,0,1)), linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.6)), url("${IMAGE_BASE + item.poster_path}")`,
+                                        backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.2), rgba(0,0,0,1)), linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.6)), url("${IMAGE_SMALL_POSTER + item.poster_path}")`,
                                         backgroundPosition: 'center',
                                         backgroundRepeat: 'no-repeat',
                                         backgroundSize: 'cover',

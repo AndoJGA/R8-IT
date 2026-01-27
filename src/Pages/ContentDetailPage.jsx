@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"; // Added useEffect and useState to imports
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 
-import { IMAGE_BASE } from "../services/tmdbClient.js";
+import {IMAGE_BASE, IMAGE_MINI_POSTER} from "../services/tmdbClient.js";
 import { getCredits, getRecommendations, getVideos } from "../Services/content.js";
 import genreData from "../Services/genres.js";
+import RatingModal from "../Modals/RatingModal.jsx";
 
 const ContentDetailPage = () => {
     const navigate = useNavigate();
@@ -15,6 +16,8 @@ const ContentDetailPage = () => {
     const [activeTab, setActiveTab] = useState("OVERVIEW");
     const [videos, setVideos] = useState([]);
     const [recommendations, setRecommendations] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [personalRating, setPersonalRating] = useState(null);
 
     const content = location.state?.content;
 
@@ -66,6 +69,11 @@ const ContentDetailPage = () => {
         .map(actor => actor.name)
         .join(", ");
 
+    const handleSetRating = (calculatedValue) => {
+        setPersonalRating(calculatedValue);
+        setIsModalVisible(false); // Close modal after rating
+    };
+
     if (!content) return <h1>No data found for ID: {id}</h1>;
 
 
@@ -109,7 +117,7 @@ const ContentDetailPage = () => {
                             {recommendations.slice(0, 10).map(rec => (
                                 <img
                                     key={rec.id}
-                                    src={IMAGE_BASE + rec.poster_path}
+                                    src={IMAGE_MINI_POSTER + rec.poster_path}
                                     alt={rec.title}
                                     onClick={() => navigate(`/details/${rec.id}`, { state: { content: rec } })}
                                 />
@@ -122,12 +130,17 @@ const ContentDetailPage = () => {
         }
     };
 
+    const handleRatings = (item) => {
+        console.log("You clicked: " + (item.title || item.name));
+        navigate(`/ratings/${item.id}`, {state: {content: item}});
+    };
+
 
     return (
         <div
             className="details-container"
             style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6), rgba(0,0,0,1)), linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,1)), url("${IMAGE_BASE + content.backdrop_path}")`,
+                backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6), rgba(0,0,0,1)), linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,1)), linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.3)), url("${IMAGE_BASE + content.backdrop_path}")`,
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
@@ -153,7 +166,16 @@ const ContentDetailPage = () => {
                         </div>
                     </section>
                     <section className="rating-side">
-                        <h1>{(content.vote_average).toFixed(1)}⭐</h1>
+                        <button onClick={() => (content.title ? console.log("Nothing to do") : handleRatings(content))}>
+                            ⭐
+                            <div>
+                                <h4>{(content.vote_average).toFixed(1)} / 10</h4>
+                                <h6>{content.vote_count?.toLocaleString()}</h6>
+                            </div>
+                        </button>
+                        <button onClick={()=> setIsModalVisible(true)}>
+                            {personalRating ? `⭐ ${personalRating.toFixed(1)}` : "⭐ Rate"}
+                        </button>
                     </section>
                 </section>
 
@@ -167,8 +189,15 @@ const ContentDetailPage = () => {
                     {renderTabContent()}
                 </section>
 
-            </div>
 
+
+            </div>
+            {isModalVisible && (
+                <RatingModal
+                    onClose={() => setIsModalVisible(false)}
+                    onSaveRating={handleSetRating}
+                />
+            )}
         </div>
     );
 }

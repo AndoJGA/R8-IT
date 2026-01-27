@@ -1,30 +1,31 @@
-import React, {useState} from "react";
-
+import React, { useState, useEffect } from "react"; // Added useEffect
 import { searchContent } from "../services/content.js";
 import { IMAGE_BASE } from "../services/tmdbClient.js";
+import {useNavigate} from "react-router-dom";
 
 const SearchPage = () => {
+
+    const navigate = useNavigate();
+
+
     const [loading, setLoading] = useState(false);
     const [contentArray, setContentArray] = useState([]);
-    const [searchTerm, setSearchTerm] = useState()
+    const [searchTerm, setSearchTerm] = useState(""); // Initialized with empty string
 
-    const handleInputChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
+    // 1. Create the search function
+    const handleSearch = async (query) => {
+        if (!query.trim()) {
+            setContentArray([]); // Clear results if input is empty
+            return;
+        }
 
-    const handleSearch = async () => {
-        if (!searchTerm) return;
         setLoading(true);
-
         try {
-            const data = await searchContent(searchTerm);
-
+            const data = await searchContent(query);
             const filteredResults = data.results.filter(item =>
                 (item.media_type === 'movie' || item.media_type === 'tv') && item.poster_path
             );
-
             setContentArray(filteredResults);
-
         } catch (error) {
             console.error("Search failed:", error);
         } finally {
@@ -32,11 +33,38 @@ const SearchPage = () => {
         }
     };
 
+    // 2. useEffect handles the 3-second delay (Debounce)
+    useEffect(() => {
+        // Set a timer to run the search after 3 seconds
+        const delayInputTimeoutId = setTimeout(() => {
+            handleSearch(searchTerm);
+        }, 1000);
+
+        // Cleanup function: This clears the timer if the user types again
+        // before the 3 seconds are up, resetting the clock.
+        return () => clearTimeout(delayInputTimeoutId);
+    }, [searchTerm]); // Only runs when searchTerm changes
+
+    const handleInputChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const handleDetails = (item) => {
+        console.log("You clicked: " + (item.title || item.name));
+        navigate(`/details/${item.id}`, {state: {content: item}});
+    };
+
     return (
-        <>
-            <header>
-                <input type="text" value={searchTerm} onChange={handleInputChange} />
-                <button onClick={handleSearch}>🔍</button>
+        <div>
+            <header className="search-container">
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={handleInputChange}
+                    className="search-input"
+                    placeholder="Type to search..."
+                />
+                {/* Button removed as requested */}
             </header>
 
             <main>
@@ -44,11 +72,11 @@ const SearchPage = () => {
 
                 <div className="search-results-container">
                     {!loading && contentArray.map((item) => (
-                        <div
+                        <button
+                            onClick={() => handleDetails(item)}
                             key={item.id}
                             className="search-result-hero"
                             style={{
-                                // Your exact requested gradient and backdrop logic
                                 backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.2), rgba(0,0,0,1)), 
                                       linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.6)),  
                                       url("${IMAGE_BASE + item.poster_path}")`,
@@ -61,12 +89,12 @@ const SearchPage = () => {
                                 borderRadius: '15px'
                             }}
                         >
-                        </div>
+                        </button>
                     ))}
                 </div>
             </main>
-        </>
-    )
-}
+        </div>
+    );
+};
 
 export default SearchPage;

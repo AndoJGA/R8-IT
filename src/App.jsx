@@ -9,6 +9,7 @@ import ContentDetailPage from "./Pages/ContentDetailPage.jsx";
 import TopPick from "./Components/TopPick.jsx";
 import NotFoundPage from "./Pages/NotFoundPage.jsx";
 import NavBar from "./Components/NavBar.jsx";
+import RatingsPage from "./Pages/RatingsPage.jsx";
 
 
 const Layout = () => (
@@ -28,7 +29,8 @@ const router = createBrowserRouter([
             { path: "/", element: <ExplorePage /> },
             { path: "/search", element: <SearchPage /> },
             { path: "/details/:id", element: <ContentDetailPage /> },
-            { path: "/profile", element: <TopPick /> }, // Added this for your profile button
+            { path: "/profile", element: <TopPick /> },
+            { path: "/ratings/:id", element: <RatingsPage /> },
             { path: "*", element: <NotFoundPage /> },
         ]
     },
