@@ -8,7 +8,7 @@
 }
 
 body {
-    background: #141414; /* Netflix signature background black */
+    background: #cccccc; /* Netflix signature background black */
     color: #e5e5e5;      /* Netflix off-white for better readability */
     font-family: 'Inter', sans-serif; /* Default UI font */
     -webkit-font-smoothing: antialiased;

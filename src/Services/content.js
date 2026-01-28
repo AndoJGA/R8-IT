@@ -20,3 +20,6 @@ export const getTVDetails = (id) =>
 
 export const getTVEpisodeGroups = (id) =>
     tmdbFetch(`/tv/${id}/episode_groups`);
+
+export const getTVSeasons = (id) =>
+    tmdbFetch(`/tv/episode_group/${id}`);

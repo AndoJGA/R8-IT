@@ -18,16 +18,19 @@ button:hover{
 /* NavBar Files */
 .navbar{
     background-color: rgba(0,0,0,0.1);
-    border-radius: 0 0 10px 10px;
 
     width: 100%;
     height: 70px;
 
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 10px;
 
     position: sticky;
+
+    top: 0;
+    z-index: 1000; /* Keeps it above other content */
 }
 
 /* Top Picks Files */
@@ -70,25 +73,82 @@ button:hover{
 
 
 /* Explore Page Files */
-.trending{
-    display: flex;
-    flex-direction: column;
-    margin: 20px;
+.trending-container {
+    width: 100%;
+    overflow: hidden;
 }
 
-.trending h1{
-    color: Green;
+.trending {
+    display: flex;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    gap: 20px;
+    padding: 20px;
+    /* Essential for the ::before positioning in children */
+    perspective: 1000px;
+}
+
+.trending::-webkit-scrollbar {
+    display: none;
+}
+
+.trending-container h1 {
+    color: green;
     font-size: 70px;
     font-weight: bold;
+    margin-left: 20px;
 }
 
-.trending-list{
-    list-style: none;
-
+.trending-content {
+    flex: 0 0 auto;
+    width: 200px;
+    height: 300px;
+    border-radius: 10px;
+    position: relative; /* Anchor for the ::before pseudo-element */
+    overflow: hidden;   /* Keeps the blur and scale inside the card */
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    z-index: 1;
+}
 
-    gap: 50px;
+.trending-content::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: inherit;
+    background-size: cover;
+    background-position: center;
+    transition: filter 0.3s ease, transform 0.3s ease;
+    z-index: -1;
+}
+
+.trending-content:hover {
+    transform: scale(1.05);
+}
+
+.trending-content:hover::before {
+    filter: blur(5px) brightness(0.7); /* Brightness helps white text pop */
+}
+
+.button-text {
+    opacity: 0;
+    color: white;
+    transition: opacity 0.3s ease;
+    pointer-events: none; /* Prevents text from interfering with hover */
+    text-align: center;
+    padding: 10px;
+}
+
+.trending-content:hover .button-text {
+    opacity: 1;
 }
 
 /* Content Details Page Files */
@@ -237,9 +297,52 @@ button:hover{
 .search-results-container{
     display: flex;
     flex-wrap: wrap;
-    gap: 50px;
+    gap: 20px;
 
     padding: 10px 50px;
+}
+.search-result-hero {
+    position: relative;
+    width: 200px;
+    height: 300px;
+    cursor: pointer;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+/* This creates a separate layer for the blur */
+.search-result-hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: inherit; /* Pulls the inline style image */
+    background-size: cover;
+    background-position: center;
+    transition: filter 0.3s ease;
+    z-index: -1; /* Puts it behind the text */
+}
+
+.search-result-hero:hover::before {
+    filter: blur(3px); /* Blurs the actual image layer */
+}
+
+.search-result-hero:hover {
+    transform: scale(1.02);
+}
+
+.button-text {
+    opacity: 0;
+    color: white;
+    transition: opacity 0.5s ease;
+    z-index: 1; /* Ensures text is on top */
+}
+
+.search-result-hero:hover .button-text {
+    opacity: 1;
 }
 
 /*Ratings Page items*/

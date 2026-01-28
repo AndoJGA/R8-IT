@@ -47,30 +47,34 @@ const ExplorePage = () => {
     return (
         <div>
             <header><TopPick /></header>
-            <main>
+            <main className="trending-container">
+                <h1>Trending Content</h1>
                 <div className="trending">
-                    <h1>Trending Content</h1>
-                    <ul className="trending-list">
-                        {contentArray.map((item) => (
-                            <li key={item.id}>
-                                <button
-                                    className="movie-cards"
-                                    // 3. Pass the specific item to the function
-                                    onClick={() => handleDetails(item)}
-                                    // 4. Style must be INSIDE the tag
-                                    style={{
-                                        backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.2), rgba(0,0,0,1)), linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.6)), url("${IMAGE_SMALL_POSTER + item.poster_path}")`,
-                                        backgroundPosition: 'center',
-                                        backgroundRepeat: 'no-repeat',
-                                        backgroundSize: 'cover',
-                                        height: '450px',
-                                        width: '300px',
-                                        borderRadius: '10px'
-                                    }}
-                                ></button>
-                            </li>
-                        ))}
-                    </ul>
+                    {!loading && contentArray.filter(content => content.vote_count > 10).map((item) => (
+                        <button
+                            onClick={() => handleDetails(item)}
+                            key={item.id}
+                            className="trending-content"
+                            style={{
+                                backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.2), rgba(0,0,0,1)), 
+                                      linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.6)),  
+                                      url("${IMAGE_SMALL_POSTER + item.poster_path}")`,
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundSize: 'cover',
+                            }}
+                        >
+                            <span className="button-text">
+                                <h3>
+                                {(item.name || item.title).length > 10
+                                    ? (item.name || item.title).slice(0, 10) + " ..."
+                                    : (item.name || item.title)}
+                                </h3>
+                                <p>{item.name ? "Tv Show" : "Movie"}</p>
+                                <p>{item.vote_average.toFixed(1)} ({item.vote_count.toLocaleString()})</p>
+                            </span>
+                        </button>
+                    ))}
                 </div>
             </main>
         </div>

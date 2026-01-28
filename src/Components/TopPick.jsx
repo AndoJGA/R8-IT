@@ -9,11 +9,14 @@ import {
 } from "../services/tmdbClient.js";
 import genreData from "../services/genres.js";
 import { randomIndex } from "../services/randomNumber.js";
+import {useNavigate} from "react-router-dom";
 
 const TopPick = () => {
     const [loading, setLoading] = useState(true);
     const [item, setItem] = useState(null);
-    const [currentBackdrop, setCurrentBackdrop] = useState(""); // Holds the loaded image URL
+    const [currentBackdrop, setCurrentBackdrop] = useState("");
+
+    const navigate = useNavigate();
 
     // 1. Fetch the data first
     useEffect(() => {
@@ -79,6 +82,11 @@ const TopPick = () => {
     if (loading) return <div className="loader">Loading Trending Content...</div>;
     if (!item) return null;
 
+    const handleDetails = (item) => {
+        console.log("You clicked: " + (item.title || item.name));
+        navigate(`/details/${item.id}`, {state: {content: item}});
+    };
+
     return (
         <section>
             <div
@@ -117,7 +125,7 @@ const TopPick = () => {
 
                 <div className="action-buttons">
                     <button onClick={handlePlay}> ▶ PLAY </button>
-                    <button> MORE DETAIL </button>
+                    <button onClick={() => handleDetails(item)}> MORE DETAIL </button>
                 </div>
             </div>
         </section>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"; // Added useEffect
 import { searchContent } from "../services/content.js";
-import { IMAGE_BASE } from "../services/tmdbClient.js";
+import { IMAGE_BASE, IMAGE_SMALL_POSTER } from "../services/tmdbClient.js";
 import {useNavigate} from "react-router-dom";
 
 const SearchPage = () => {
@@ -71,7 +71,7 @@ const SearchPage = () => {
                 {loading && <p>Searching...</p>}
 
                 <div className="search-results-container">
-                    {!loading && contentArray.map((item) => (
+                    {!loading && contentArray.filter(content => content.vote_count > 10).map((item) => (
                         <button
                             onClick={() => handleDetails(item)}
                             key={item.id}
@@ -79,16 +79,21 @@ const SearchPage = () => {
                             style={{
                                 backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.2), rgba(0,0,0,1)), 
                                       linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.6)),  
-                                      url("${IMAGE_BASE + item.poster_path}")`,
+                                      url("${IMAGE_SMALL_POSTER + item.poster_path}")`,
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundSize: 'cover',
-                                height: '450px',
-                                width: '300px',
-                                margin: '10px',
-                                borderRadius: '15px'
                             }}
                         >
+                            <span className="button-text">
+                                <h3>
+                                {(item.name || item.title).length > 10
+                                    ? (item.name || item.title).slice(0, 10) + " ..."
+                                    : (item.name || item.title)}
+                                </h3>
+                                <p>{item.name ? "Tv Show" : "Movie"}</p>
+                                <p>{item.vote_average.toFixed(1)} ({item.vote_count.toLocaleString()})</p>
+                            </span>
                         </button>
                     ))}
                 </div>

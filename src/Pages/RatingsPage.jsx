@@ -1,24 +1,47 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { IMAGE_BASE, IMAGE_SMALL_POSTER } from "../Services/tmdbClient.js";
-import { getTVDetails } from "../Services/content.js";
+import { getTVDetails, getTVEpisodeGroups, getTVSeasons } from "../Services/content.js";
 
 const Ratings = () => {
     const location = useLocation();
     const content = location.state?.content;
     const [extraDetails, setExtraDetails] = useState(null);
+    const [episodeListDetails, setEpisodeListDetails] = useState(null);
+    const [seasonsDetail, setSeasonsDetail] = useState(null);
 
     useEffect(() => {
         const isTV = content?.media_type === 'tv' || content?.first_air_date;
+
         if (content?.id && isTV) {
+            // Step 1 & 2: Get TV Details
             getTVDetails(content.id)
                 .then(data => setExtraDetails(data))
                 .catch(err => console.error("Failed to fetch TV details", err));
+
+            // Step 2: Get Episode Groups list
+            getTVEpisodeGroups(content.id)
+                .then(data => {
+                    setEpisodeListDetails(data);
+
+                    // Step 3: Filter group with name including "Season"
+                    const seasonGroup = data?.results?.find(group =>
+                        group.name?.includes("Season")
+                    );
+
+                    // Step 4: Get ID and fetch the specific season mapping
+                    if (seasonGroup?.id) {
+                        return getTVSeasons(seasonGroup.id);
+                    }
+                })
+                .then(seasonsData => {
+                    if (seasonsData) setSeasonsDetail(seasonsData);
+                })
+                .catch(err => console.error("Failed to fetch Season Details", err));
         }
-    }, [content]);
+    }, [content?.id]);
 
     const getRatingData = (rating) => {
-        // Handle null or undefined ratings passed into the function
         const val = rating || 0;
         if (val >= 9.5) return { label: "AWESOME", color: "#3b82f6", bg: "rgba(59, 130, 246, 0.8)" };
         if (val >= 8.5) return { label: "GREAT", color: "#22c55e", bg: "rgba(34, 197, 94, 0.8)" };
@@ -29,8 +52,6 @@ const Ratings = () => {
     };
 
     if (!content) return <div className="loader">No Content Selected</div>;
-
-    const currentRating = getRatingData(content?.vote_average);
 
     return (
         <div className="ratings-container"
@@ -47,13 +68,11 @@ const Ratings = () => {
         >
             <div className="ratings-small-details">
                 <img src={IMAGE_SMALL_POSTER + content?.poster_path} alt=""/>
-                {/* FIXED: Added ?. before toFixed to prevent crash if vote_average is missing */}
                 <h4>⭐ {content?.vote_average?.toFixed(1) || "0.0"} <strong>({content?.vote_count?.toLocaleString() || 0})</strong></h4>
                 <h2>{content?.title || content?.name}</h2>
 
                 <div className="date-details">
                     <p>{(content?.release_date || content?.first_air_date)?.slice(0, 4)}</p>
-                    {/* FIXED: Safe access to extraDetails */}
                     <p>{extraDetails?.last_air_date ? `-${extraDetails.last_air_date.slice(0, 4)}` : ""}</p>
                 </div>
                 <button>Add To Watchlist</button>
@@ -72,19 +91,19 @@ const Ratings = () => {
 
                 <div className="seasons-container">
                     <div className="seasons-list">
-                        {extraDetails?.seasons?.filter(s => s.season_number > 0).map((season) => {
-                            const sRating = getRatingData(season.vote_average);
+                        {seasonsDetail?.groups?.map((group) => {
+                            const sRating = getRatingData(group.vote_average);
                             return (
-                                <button key={season.id} className="season"
-                                        style={{
-                                            backgroundColor: sRating.bg,
-                                            border: `2px solid ${sRating.color}`,
-                                        }}
+                                <button
+                                    key={group.id}
+                                    className="season"
+                                    style={{
+                                        backgroundColor: sRating.bg,
+                                        border: `2px solid ${sRating.color}`,
+                                    }}
                                 >
-                                    {/* FIXED: Added ?. before slice to prevent crash if name is missing */}
-                                    <p>S {season.name?.slice(-2)}</p>
-                                    <small>E {season.episode_count}</small>
-                                    <strong>⭐ {season.vote_average || "N/A"}</strong>
+                                    <p>S {group.order + 1}</p>
+                                    <strong>⭐ {group.vote_average?.toFixed(1) || "N/A"}</strong>
                                 </button>
                             );
                         })}
