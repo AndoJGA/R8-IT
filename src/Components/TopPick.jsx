@@ -10,6 +10,7 @@ import {
 import genreData from "../services/genres.js";
 import { randomIndex } from "../services/randomNumber.js";
 import {useNavigate} from "react-router-dom";
+import "../Css/top-pick.css"
 
 const TopPick = () => {
     const [loading, setLoading] = useState(true);
@@ -88,47 +89,45 @@ const TopPick = () => {
     };
 
     return (
-        <section>
+        <div className="hero-container">
             <div
                 className="hero"
                 key={item.id}
                 style={{
-                    // Use a fallback solid color or gradient so the UI isn't "wonky" while waiting
-                    backgroundColor: "#111",
                     backgroundImage: currentBackdrop
-                        ? `linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1)), url("${currentBackdrop}")`
-                        : `linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1))`,
+                        ? `url("${currentBackdrop}")`
+                        : ``,
                     backgroundPosition: 'center',
                     backgroundSize: 'cover',
-                    height: '80vh',
-                    transition: "background-image 0.4s ease-in-out" // Smooth transition between quality steps
                 }}
+
             >
-                {/* Logo Image */}
-                {item.logo_full_path && (
-                    <img
-                        src={item.logo_full_path}
-                        alt={item.title || item.name}
-                        className="content-logo"
-                        style={{ maxWidth: '300px' }}
-                    />
-                )}
+                <div className="hero-detail">
+                    {item.logo_full_path && (
+                        <img
+                            src={item.logo_full_path}
+                            alt={item.title || item.name}
+                            className="content-logo"
+                            style={{ maxWidth: '300px' }}
+                        />
+                    )}
 
-                <div className="small-details">
-                    <p>⭐ {Math.round(item.vote_average * 10) / 10}</p>
-                    <p>{(item.release_date || item.first_air_date || "").slice(0, 4)}</p>
-                    <p>{genreData[item.media_type]?.[item.genre_ids[0]] || "Genre"}</p>
-                    <p>{genreData[item.media_type]?.[item.genre_ids[1]] || "Action"}</p>
-                </div>
+                    <div className="small-details">
+                        <p>⭐ {Math.round(item.vote_average * 10) / 10}</p>
+                        <p>{(item.release_date || item.first_air_date || "").slice(0, 4)}</p>
+                        <p>{genreData[item.media_type]?.[item.genre_ids[0]] || "Genre"}</p>
+                        <p>{genreData[item.media_type]?.[item.genre_ids[1]] || "Action"}</p>
+                    </div>
 
-                <h4 className="overview">{item.overview}</h4>
+                    <h4 className="overview">{item.overview.length > 100 ? item.overview.slice(0,100) + " ..." : item.overview}</h4>
 
-                <div className="action-buttons">
-                    <button onClick={handlePlay}> ▶ PLAY </button>
-                    <button onClick={() => handleDetails(item)}> MORE DETAIL </button>
+                    <div className="action-buttons">
+                        <button onClick={handlePlay}> ▶ PLAY </button>
+                        <button onClick={() => handleDetails(item)}> MORE DETAIL </button>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
     );
 };
 

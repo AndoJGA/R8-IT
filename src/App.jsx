@@ -3,7 +3,7 @@ import React from 'react';
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import "./Css/prototype.css"
 
-import ExplorePage from "./Pages/ExplorePage.jsx";
+import HomePage from "./Pages/HomePage.jsx";
 import SearchPage from "./Pages/SearchPage.jsx";
 import ContentDetailPage from "./Pages/ContentDetailPage.jsx";
 import TopPick from "./Components/TopPick.jsx";
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <Layout />, // Wrap everything in the Layout
         children: [
-            { path: "/", element: <ExplorePage /> },
+            { path: "/", element: <HomePage /> },
             { path: "/search", element: <SearchPage /> },
             { path: "/details/:id", element: <ContentDetailPage /> },
             { path: "/profile", element: <TopPick /> },

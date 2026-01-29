@@ -1,0 +1,51 @@
+.navbar{
+    background-color: transparent;
+
+    width: 100%;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    position: sticky;
+    margin-top: 10px;
+
+    top: 0;
+    z-index: 1000; /* Keeps it above other content */
+}
+
+.content-type{
+    border: 1px solid var(--color-accent);
+    width: 380px;
+    background-color: var(--color-surface);
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.content-type .active{
+    color: var(--color-text-main);
+}
+
+.content-type button{
+    background-color: transparent;
+    color: var(--color-text-muted);
+    width: fit-content;
+    height: fit-content;
+}
+
+.content-type button:hover{
+    background-color: rgba(240, 237, 238, 0.2);
+}
+
+.navs{
+    display: flex;
+    width: 150px;
+    justify-content: space-between;
+
+    font-size: 20px;
+}
+
+NavLink{
+    decoration-style: none ;
+}

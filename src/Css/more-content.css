@@ -1,0 +1,104 @@
+.trending-container {
+    width: 100%;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.genre-buttons{
+    border: 3px solid white;
+    width: 98%;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.genre-buttons button{
+    width: 200px;
+    height: 70px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+
+
+
+
+.trending {
+    display: flex;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    gap: 20px;
+    padding: 20px;
+    /* Essential for the ::before positioning in children */
+    perspective: 1000px;
+}
+
+.trending::-webkit-scrollbar {
+    display: none;
+}
+
+.trending-container h1 {
+    color: green;
+    font-size: 70px;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.trending-content {
+    flex: 0 0 auto;
+    width: 200px;
+    height: 300px;
+    border-radius: 10px;
+    position: relative; /* Anchor for the ::before pseudo-element */
+    overflow: hidden;   /* Keeps the blur and scale inside the card */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    z-index: 1;
+}
+
+.trending-content::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: inherit;
+    background-size: cover;
+    background-position: center;
+    transition: filter 0.3s ease, transform 0.3s ease;
+    z-index: -1;
+}
+
+.trending-content:hover {
+    transform: scale(1.05);
+}
+
+.trending-content:hover::before {
+    filter: blur(5px) brightness(0.7); /* Brightness helps white text pop */
+}
+
+.button-text {
+    opacity: 0;
+    color: white;
+    transition: opacity 0.3s ease;
+    pointer-events: none; /* Prevents text from interfering with hover */
+    text-align: center;
+    padding: 10px;
+}
+
+.trending-content:hover .button-text {
+    opacity: 1;
+}

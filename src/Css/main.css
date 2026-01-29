@@ -1,5 +1,26 @@
-/* Import Geologica (Netflix Sans closest match) and Inter (for UI text) */
+/* Import Geologica and Inter */
 @import url('https://fonts.googleapis.com/css2?family=Geologica:wght@400;700;900&family=Inter:wght@400;700&display=swap');
+
+:root {
+    /* Primary Brand Colors */
+    --color-main: #2596BE;         /* Your Bondy Blue */
+    --color-highlight: #45F0DF;    /* Cyan Highlight */
+    --color-accent: #07393C;       /* Dark Teal for buttons/depth */
+    --color-spontaneous: #F0EDEE;  /* Off-white for accents */
+
+    /* Background & Surfaces */
+    --color-bg: #0A090C;           /* Deep Dark Background */
+    --color-surface: #161B22;      /* Slightly lighter card background */
+
+    /* Typography */
+    --color-text-main: #F0EDEE;    /* High readability text */
+    --color-text-muted: #9BA3AF;   /* Grey for labels/descriptions */
+
+    /* Status Colors (The 3 I filled in) */
+    --color-success: #45F09E;      /* For "Added to Vault" */
+    --color-warning: #F0B245;      /* For "Storage almost full" */
+    --color-error: #F04545;        /* For "Failed to R8" */
+}
 
 *{
     box-sizing: border-box;
@@ -8,44 +29,72 @@
 }
 
 body {
-    background: #cccccc; /* Netflix signature background black */
-    color: #e5e5e5;      /* Netflix off-white for better readability */
-    font-family: 'Inter', sans-serif; /* Default UI font */
+    background-color: var(--color-bg);
+    color: var(--color-text-main);
+    font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
 }
 
 /* Specific styling for Movie Titles and Headings */
-h1, h2, h3, .movie-title {
+h1, h2, h3 {
     font-family: 'Geologica', sans-serif;
-    font-weight: 900;      /* Ultra Bold */
+    font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: -0.02em; /* Netflix titles actually have TIGHTER spacing */
+    letter-spacing: -0.02em;
     line-height: 1.1;
-    color: #fff;
+    color: var(--color-main); /* Using main blue for headlines */
+}
+
+/* Highlighted or Special Text */
+.accent-text {
+    color: var(--color-highlight);
 }
 
 /* The Overview/Description logic */
-p, .overview-section h3 {
+p {
     font-family: 'Inter', sans-serif;
-    text-transform: none;  /* Netflix does NOT use caps for descriptions */
+    text-transform: none;
     letter-spacing: normal;
     font-weight: 400;
-    line-height: 1.4;
-    color: #d2d2d2;
+    line-height: 1.6;
+    color: var(--color-text-muted);
 }
 
-/* Button Styling (Netflix Style) */
+.overview{
+    font-family: 'Inter', sans-serif;
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 400;
+    line-height: 2;
+    color: var(--color-text-muted);
+}
+
+/* Button Styling (R8-It Style) */
 button {
     font-family: 'Inter', sans-serif;
     font-weight: 700;
     text-transform: none;
     padding: 0.8rem 1.5rem;
-    border-radius: 4px; /* Netflix uses small rounded corners */
+    border-radius: 6px; /* Slightly more modern than 4px */
     cursor: pointer;
-    transition: background 0.2s ease;
+    border: none;
+    transition: all 0.2s ease;
+    background-color: var(--color-accent);
+    color: var(--color-highlight); /* Contrast text */
 }
 
-/* Starring/Cast Line */
+button:hover {
+    background-color: var(--color-main);
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Status Message Classes */
+.msg-success { color: var(--color-success); }
+.msg-warning { color: var(--color-warning); }
+.msg-error   { color: var(--color-error); }
+
+/* Starring/Cast Line labels */
 .overview-section p strong {
-    color: #d4d4d4; /* Netflix uses grey for labels like 'Starring:' */
+    color: var(--color-spontaneous);
 }
