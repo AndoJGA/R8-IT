@@ -1,61 +1,50 @@
 .trending-container {
-    width: 100%;
+    width: 98%;
     overflow: hidden;
+    margin: auto;
 
     display: flex;
     flex-direction: column;
     align-items: center;
+    align-self: center;
 }
 
-.genre-buttons{
-    border: 3px solid white;
-    width: 98%;
-
-    display: flex;
-    justify-content: space-between;
-}
-
-.genre-buttons button{
-    width: 200px;
-    height: 70px;
+.content-controllers{
+    width: 100%;
+    height: fit-content;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+.helpers{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
 
+    background: var(--color-surface);
+    height: fit-content;
+    width: fit-content;
 
-
-
-
+    padding: 10px;
+    border-radius: 30px;
+}
+.helpers p{
+    cursor: pointer;
+}
 
 .trending {
     display: flex;
-    justify-content: flex-start;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    gap: 20px;
-    padding: 20px;
-    /* Essential for the ::before positioning in children */
-    perspective: 1000px;
-}
+    flex-wrap: wrap;
+    gap: 50px;
+    justify-content: center;
 
-.trending::-webkit-scrollbar {
-    display: none;
-}
-
-.trending-container h1 {
-    color: green;
-    font-size: 70px;
-    font-weight: bold;
-    margin-left: 20px;
+    margin: 30px 0;
 }
 
 .trending-content {
-    flex: 0 0 auto;
     width: 200px;
     height: 300px;
     border-radius: 10px;

@@ -19,7 +19,6 @@
 }
 
 .hero-detail{
-    opacity: 0;
     border-radius: 30px;
 
     width: 100%;
@@ -31,13 +30,6 @@
     padding: 80px;
     gap: 30px;
     background: linear-gradient(to right, rgba(22, 27, 34, 1), rgba(22, 27, 34, 0.5), rgba(10, 9, 12, 0));
-
-    transition: all 3s ease;
-}
-
-.hero-detail:hover{
-    opacity: 1;
-    transition: all 0.6s ease;
 }
 
 .small-details{

@@ -1,0 +1,129 @@
+/* Container & Layout */
+.extra-content-info {
+    width: 90%;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    overflow-x: hidden;
+}
+
+.both-content, .actors-details, .new-details, .more-details, .actor-info, .season-detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.both-content { gap: 20px; }
+.actors-details, .new-details, .more-details { gap: 5px; }
+
+/* Text Wrapping Fixes */
+.more-details p, .season-detail p, .overview {
+    white-space: normal; /* Breaks the 'nowrap' inherited from sliders */
+    word-wrap: break-word;
+    line-height: 1.5;
+}
+
+/* Cast & Season Horizontal Sliders */
+.actors, .season-selector {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap; /* Keeps items in a single row */
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px 0;
+}
+
+.actors::-webkit-scrollbar, .season-selector::-webkit-scrollbar {
+    display: none;
+}
+
+/* Item Sizing */
+.actor-card {
+    flex: 0 0 100px;
+    filter: contrast(90%);
+    transition: 0.4s ease-in-out;
+}
+
+.actor-card:hover {
+    filter: contrast(120%);
+    transform: scale(1.05);
+}
+
+.season-pill {
+    flex: 0 0 auto;
+}
+
+.actor-img {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.actor-info p { font-size: 12px; }
+
+/* Detail Rows */
+.detail, .small-detail {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.small-detail { justify-content: space-between; }
+
+/* TV Shows Section */
+.tv-shows {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.season-selector{
+    padding-left: 10px;
+}
+
+/* Season Card Display */
+.season-card {
+    flex: 0 0 auto;
+    width: 700px;
+    height: 320px;
+    display: flex;
+    gap: 20px;
+    border-radius: 12px;
+    padding: 20px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-spontaneous);
+    transition: 0.5s ease-in-out;
+}
+
+.season-card:hover {
+    transform: scale(1.01);
+    background: var(--color-accent);
+}
+
+.season-card img {
+    height: 100%;
+    width: auto;
+    border-radius: 8px;
+}
+
+.season-detail {
+    flex: 1;
+    min-width: 0; /* Allows children to wrap text instead of overflowing */
+    justify-content: space-around;
+}
+
+.synopsis {
+    width: 100%;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    /* Optional: clamps text to 6 lines to prevent overflow */
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

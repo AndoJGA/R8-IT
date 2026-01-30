@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { IMAGE_BASE, IMAGE_SMALL_POSTER } from "../Services/tmdbClient.js";
-import { getTVDetails, getTVEpisodeGroups, getTVSeasons } from "../Services/content.js";
+import { getContentDetails, getTVEpisodeGroups, getTVSeasons } from "../Services/content.js";
 
 const Ratings = () => {
     const location = useLocation();
@@ -15,7 +15,7 @@ const Ratings = () => {
 
         if (content?.id && isTV) {
             // Step 1 & 2: Get TV Details
-            getTVDetails(content.id)
+            getContentDetails(content.media_type, content.id)
                 .then(data => setExtraDetails(data))
                 .catch(err => console.error("Failed to fetch TV details", err));
 

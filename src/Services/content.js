@@ -15,11 +15,14 @@ export const getVideos = (type, id) =>
 export const getRecommendations = (type, id) =>
     tmdbFetch(`/${type}/${id}/recommendations`);
 
-export const getTVDetails = (id) =>
-    tmdbFetch(`/tv/${id}`);
+export const getContentDetails = (type, id) =>
+    tmdbFetch(`/${type}/${id}`);
 
 export const getTVEpisodeGroups = (id) =>
     tmdbFetch(`/tv/${id}/episode_groups`);
 
 export const getTVSeasons = (id) =>
     tmdbFetch(`/tv/episode_group/${id}`);
+
+export const getSeasonDetails = (seriesId, seasonNumber) =>
+    tmdbFetch(`/tv/${seriesId}/season/${seasonNumber}`);

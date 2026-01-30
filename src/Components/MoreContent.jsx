@@ -9,6 +9,8 @@ import "../Css/more-content.css"
 const MoreContent = () => {
     const [loading, setLoading] = useState(false);
     const [contentArray, setContentArray] = useState([]);
+    const [activeFilter, setActiveFilter] = useState('all'); // 'all', 'movie', or 'tv'
+
 
     // 1. Call the hook at the top level
     const navigate = useNavigate();
@@ -46,20 +48,11 @@ const MoreContent = () => {
 
     return (
         <div className="trending-container">
-            <div className="genre-buttons">
-                <button>🔥 Trending</button>
-                <button>⚔️ Action & Adventure</button>
-                <button>🙀 Animation</button>
-                <button>🤣 Comedy</button>
-                <button>👮 Crime & Documentary</button>
-                <button>👨‍👩‍👧‍👦 Family</button>
-                <button>👽 Fantasy & Sci-fi</button>
-                <button>🪖 War & Western</button>
-            </div>
             <div className="content-controllers">
                 <h1>Trending Content</h1>
-                <div>
+                <div className="helpers">
                     <p>🎞️</p>
+                    <p>|</p>
                     <p>🤏</p>
                 </div>
             </div>
@@ -70,9 +63,7 @@ const MoreContent = () => {
                         key={item.id}
                         className="trending-content"
                         style={{
-                            backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.2), rgba(0,0,0,1)), 
-                                  linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.6)),  
-                                  url("${IMAGE_SMALL_POSTER + item.poster_path}")`,
+                            backgroundImage: `url("${IMAGE_SMALL_POSTER + item.poster_path}")`,
                             backgroundPosition: 'center',
                             backgroundRepeat: 'no-repeat',
                             backgroundSize: 'cover',
